@@ -16,6 +16,6 @@ public class Client : MonoBehaviour {
 
     public void Do()
     {
-        Debug.Log("sfsdf");
+        Debug.Log("sfsdf1111");
     }
 }

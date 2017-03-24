@@ -1,0 +1,6 @@
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Debug\ProjectA_Server.exe.config
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Debug\ProjectA_Server.exe
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Debug\ProjectA_Server.pdb
+D:\Kursach\ProjectA_Server\ProjectA_Server\obj\Debug\ProjectA_Server.csprojResolveAssemblyReference.cache
+D:\Kursach\ProjectA_Server\ProjectA_Server\obj\Debug\ProjectA_Server.exe
+D:\Kursach\ProjectA_Server\ProjectA_Server\obj\Debug\ProjectA_Server.pdb

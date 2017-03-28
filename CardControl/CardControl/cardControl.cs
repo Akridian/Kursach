@@ -77,6 +77,7 @@ namespace CardControl
                 {
                     name.BackColor = Color.White;
                 }
+                OnSelectionChangedEvent(new EventArgs());
             }
         }
 
@@ -157,12 +158,22 @@ namespace CardControl
 
         private bool inHand = false;
 
+        public delegate void SelectionChangedEventHandler(object sender, EventArgs e);
+
+        public event SelectionChangedEventHandler SelectionChangedEvent;
+
+        protected virtual void OnSelectionChangedEvent(EventArgs e)
+        {
+            SelectionChangedEvent(this, e);
+        }
         private void Card_Click(object sender, EventArgs e)
         {
+            (sender as Control).Enabled = false;
             if (((sender as Control).Parent as Card).InHand)
             {
                 ((sender as Control).Parent as Card).Selected = !((sender as Control).Parent as Card).Selected;
             }
+            (sender as Control).Enabled = true;
         }
     }
 }

@@ -47,6 +47,10 @@ namespace ProjectA
                 {
                     hand.Controls.Add(new Card(int.Parse(id), true));
                 }
+                foreach (Card c in hand.Controls)
+                {
+                    c.SelectionChangedEvent += Card_SelectionChanged;
+                }
             }
             catch
             {
@@ -108,6 +112,21 @@ namespace ProjectA
                 }
             }
             Redraw();
+        }
+
+        public void Card_SelectionChanged(object sender, EventArgs e)
+        {
+            Card c = sender as Card;
+            if (c.Selected)
+            {
+                foreach (Card hc in hand.Controls)
+                {
+                    if (hc.Selected&&(hc!=c))
+                    {
+                        hc.Selected = false;
+                    }
+                }
+            }
         }
     }
 }

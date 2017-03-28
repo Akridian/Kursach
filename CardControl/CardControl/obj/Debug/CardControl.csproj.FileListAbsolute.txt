@@ -5,3 +5,4 @@ D:\Kursach\CardControl\CardControl\obj\Debug\CardControl.card.resources
 D:\Kursach\CardControl\CardControl\obj\Debug\CardControl.csproj.GenerateResource.Cache
 D:\Kursach\CardControl\CardControl\obj\Debug\CardControl.dll
 D:\Kursach\CardControl\CardControl\obj\Debug\CardControl.pdb
+D:\Kursach\CardControl\CardControl\obj\Debug\CardControl.csprojResolveAssemblyReference.cache

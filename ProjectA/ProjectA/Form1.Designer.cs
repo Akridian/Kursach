@@ -40,53 +40,65 @@
             // 
             // enemyRange
             // 
+            this.enemyRange.BackColor = System.Drawing.SystemColors.ControlLight;
             this.enemyRange.Location = new System.Drawing.Point(112, 12);
             this.enemyRange.Name = "enemyRange";
-            this.enemyRange.Size = new System.Drawing.Size(976, 170);
+            this.enemyRange.Padding = new System.Windows.Forms.Padding(0);
+            this.enemyRange.Size = new System.Drawing.Size(1065, 180);
             this.enemyRange.TabIndex = 0;
             this.enemyRange.TabStop = false;
             // 
             // enemyMelee
             // 
             this.enemyMelee.AutoSize = true;
-            this.enemyMelee.Location = new System.Drawing.Point(112, 188);
+            this.enemyMelee.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.enemyMelee.Location = new System.Drawing.Point(112, 198);
             this.enemyMelee.Name = "enemyMelee";
-            this.enemyMelee.Size = new System.Drawing.Size(976, 170);
+            this.enemyMelee.Padding = new System.Windows.Forms.Padding(0);
+            this.enemyMelee.Size = new System.Drawing.Size(1065, 180);
             this.enemyMelee.TabIndex = 1;
             this.enemyMelee.TabStop = false;
             // 
             // yourMelee
             // 
             this.yourMelee.AutoSize = true;
-            this.yourMelee.Location = new System.Drawing.Point(112, 383);
+            this.yourMelee.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.yourMelee.Location = new System.Drawing.Point(112, 409);
             this.yourMelee.Name = "yourMelee";
-            this.yourMelee.Size = new System.Drawing.Size(976, 170);
+            this.yourMelee.Padding = new System.Windows.Forms.Padding(0);
+            this.yourMelee.Size = new System.Drawing.Size(1065, 180);
             this.yourMelee.TabIndex = 2;
             this.yourMelee.TabStop = false;
             // 
             // yourRange
             // 
             this.yourRange.AutoSize = true;
-            this.yourRange.Location = new System.Drawing.Point(112, 559);
+            this.yourRange.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.yourRange.Location = new System.Drawing.Point(112, 595);
             this.yourRange.Name = "yourRange";
-            this.yourRange.Size = new System.Drawing.Size(976, 170);
+            this.yourRange.Padding = new System.Windows.Forms.Padding(0);
+            this.yourRange.Size = new System.Drawing.Size(1065, 180);
             this.yourRange.TabIndex = 3;
             this.yourRange.TabStop = false;
             // 
             // hand
             // 
             this.hand.AutoSize = true;
-            this.hand.Location = new System.Drawing.Point(112, 807);
+            this.hand.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.hand.Location = new System.Drawing.Point(112, 887);
             this.hand.Name = "hand";
-            this.hand.Size = new System.Drawing.Size(976, 170);
+            this.hand.Padding = new System.Windows.Forms.Padding(0);
+            this.hand.Size = new System.Drawing.Size(1065, 180);
             this.hand.TabIndex = 4;
             this.hand.TabStop = false;
             // 
             // playCard
             // 
-            this.playCard.Location = new System.Drawing.Point(511, 766);
+            this.playCard.Enabled = false;
+            this.playCard.Font = new System.Drawing.Font("Roboto Black", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playCard.Location = new System.Drawing.Point(601, 801);
             this.playCard.Name = "playCard";
-            this.playCard.Size = new System.Drawing.Size(75, 23);
+            this.playCard.Size = new System.Drawing.Size(127, 57);
             this.playCard.TabIndex = 5;
             this.playCard.Text = "play";
             this.playCard.UseVisualStyleBackColor = true;
@@ -118,8 +130,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1189, 992);
+            this.ClientSize = new System.Drawing.Size(1221, 1080);
             this.Controls.Add(this.enemyScore);
             this.Controls.Add(this.yourScore);
             this.Controls.Add(this.playCard);
@@ -128,8 +139,17 @@
             this.Controls.Add(this.yourMelee);
             this.Controls.Add(this.enemyMelee);
             this.Controls.Add(this.enemyRange);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
+            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1024, 1030);
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

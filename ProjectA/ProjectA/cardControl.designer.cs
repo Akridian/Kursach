@@ -54,7 +54,7 @@
             this.text.Location = new System.Drawing.Point(0, 80);
             this.text.Margin = new System.Windows.Forms.Padding(0);
             this.text.Name = "text";
-            this.text.Size = new System.Drawing.Size(98, 68);
+            this.text.Size = new System.Drawing.Size(100, 70);
             this.text.TabIndex = 3;
             this.text.Text = "imba";
             this.text.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -62,8 +62,10 @@
             // 
             // picture
             // 
+            this.picture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picture.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.picture.Location = new System.Drawing.Point(50, -1);
+            this.picture.InitialImage = null;
+            this.picture.Location = new System.Drawing.Point(50, 0);
             this.picture.Margin = new System.Windows.Forms.Padding(0);
             this.picture.Name = "picture";
             this.picture.Size = new System.Drawing.Size(50, 50);
@@ -93,8 +95,9 @@
             this.Controls.Add(this.text);
             this.Controls.Add(this.name);
             this.Controls.Add(this.picture);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "Card";
-            this.Size = new System.Drawing.Size(98, 148);
+            this.Size = new System.Drawing.Size(102, 152);
             this.Click += new System.EventHandler(this.Card_Click);
             ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
             this.ResumeLayout(false);

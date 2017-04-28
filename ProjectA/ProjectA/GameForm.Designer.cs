@@ -1,6 +1,6 @@
 ﻿namespace ProjectA
 {
-    partial class Form1
+    partial class GameForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -36,6 +36,10 @@
             this.playCard = new System.Windows.Forms.Button();
             this.yourScore = new System.Windows.Forms.Label();
             this.enemyScore = new System.Windows.Forms.Label();
+            this.enemyRound = new System.Windows.Forms.PictureBox();
+            this.yourRound = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.enemyRound)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yourRound)).BeginInit();
             this.SuspendLayout();
             // 
             // enemyRange
@@ -108,7 +112,7 @@
             // 
             this.yourScore.AutoSize = true;
             this.yourScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.yourScore.Location = new System.Drawing.Point(12, 538);
+            this.yourScore.Location = new System.Drawing.Point(12, 573);
             this.yourScore.Name = "yourScore";
             this.yourScore.Size = new System.Drawing.Size(35, 37);
             this.yourScore.TabIndex = 6;
@@ -119,18 +123,38 @@
             // 
             this.enemyScore.AutoSize = true;
             this.enemyScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.enemyScore.Location = new System.Drawing.Point(12, 169);
+            this.enemyScore.Location = new System.Drawing.Point(12, 179);
             this.enemyScore.Name = "enemyScore";
             this.enemyScore.Size = new System.Drawing.Size(35, 37);
             this.enemyScore.TabIndex = 7;
             this.enemyScore.Text = "0";
             this.enemyScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // enemyRound
+            // 
+            this.enemyRound.Location = new System.Drawing.Point(19, 267);
+            this.enemyRound.Name = "enemyRound";
+            this.enemyRound.Size = new System.Drawing.Size(50, 50);
+            this.enemyRound.TabIndex = 8;
+            this.enemyRound.TabStop = false;
+            this.enemyRound.Visible = false;
+            // 
+            // yourRound
+            // 
+            this.yourRound.Location = new System.Drawing.Point(19, 467);
+            this.yourRound.Name = "yourRound";
+            this.yourRound.Size = new System.Drawing.Size(50, 50);
+            this.yourRound.TabIndex = 9;
+            this.yourRound.TabStop = false;
+            this.yourRound.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1221, 1080);
+            this.Controls.Add(this.yourRound);
+            this.Controls.Add(this.enemyRound);
             this.Controls.Add(this.enemyScore);
             this.Controls.Add(this.yourScore);
             this.Controls.Add(this.playCard);
@@ -150,6 +174,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            ((System.ComponentModel.ISupportInitialize)(this.enemyRound)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yourRound)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -165,6 +191,8 @@
         private System.Windows.Forms.Button playCard;
         private System.Windows.Forms.Label yourScore;
         private System.Windows.Forms.Label enemyScore;
+        private System.Windows.Forms.PictureBox enemyRound;
+        private System.Windows.Forms.PictureBox yourRound;
     }
 }
 

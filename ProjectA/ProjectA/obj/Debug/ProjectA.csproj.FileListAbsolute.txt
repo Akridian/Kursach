@@ -1,9 +1,10 @@
 D:\Kursach\ProjectA\ProjectA\bin\Debug\ProjectA.exe.config
 D:\Kursach\ProjectA\ProjectA\bin\Debug\ProjectA.exe
 D:\Kursach\ProjectA\ProjectA\bin\Debug\ProjectA.pdb
-D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.Form1.resources
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.Properties.Resources.resources
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.csproj.GenerateResource.Cache
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.exe
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.pdb
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.csprojResolveAssemblyReference.cache
+D:\Kursach\ProjectA\ProjectA\obj\Debug\CardControl.Card.resources
+D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.GameForm.resources

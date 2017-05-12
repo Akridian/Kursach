@@ -24,37 +24,115 @@ namespace ProjectA_Server
         static void Send(TcpClient receiver, string message)
         {
             message += "?";
-            NetworkStream stream = receiver.GetStream();
-            byte[] buff = Encoding.ASCII.GetBytes(message);
-            stream.Write(BitConverter.GetBytes(buff.Length), 0, 4);
-            stream.Write(buff, 0, message.Length);
+            try
+            {
+                NetworkStream stream = receiver.GetStream();
+                byte[] buff = Encoding.ASCII.GetBytes(message);
+                stream.Write(BitConverter.GetBytes(buff.Length), 0, 4);
+                stream.Write(buff, 0, message.Length);
+            }
+            catch
+            {
+                Console.WriteLine("Не удалось передать данные клиенту. Завершаю игру.");
+                RemoveClients(receiver, true);
+                Thread.CurrentThread.Abort();
+            }
         }
 
         static string Receive(TcpClient sender)
         {
-            NetworkStream stream = sender.GetStream();
             byte[] buff = new byte[4];
-            stream.Read(buff, 0, 4);
-            int length = BitConverter.ToInt32(buff, 0);
-            buff = new byte[length];
-            stream.Read(buff, 0, length);
+            try
+            {
+                NetworkStream stream = sender.GetStream();
+                stream.Read(buff, 0, 4);
+                int length = BitConverter.ToInt32(buff, 0);
+                buff = new byte[length];
+                stream.Read(buff, 0, length);
+            }
+            catch
+            {
+                Console.WriteLine("Не удалось получить данные. Завершаю игру.");
+                RemoveClients(sender, true);
+                Thread.CurrentThread.Abort();
+            }
             string msg = Encoding.ASCII.GetString(buff);
             msg = msg.Substring(0, msg.Length - 1);
             return msg;
         }
+
+        static void RemoveClients (TcpClient client, bool withError)
+        {
+            foreach (Tuple<TcpClient, TcpClient> pair in clients)
+            {
+                if (pair.Item1 == client)
+                {
+                    clients.Remove(pair);
+                    if (withError)
+                    {
+                        Send(pair.Item2, "error");
+                        Console.WriteLine("Послал ошибку.");
+                        pair.Item2.Close();
+                    }
+                    else
+                    {
+                        pair.Item1.Close();
+                        pair.Item2.Close();
+                    }
+                    break;
+                }
+                else if (pair.Item2 == client)
+                {
+                    clients.Remove(pair);
+                    if (withError)
+                    {
+                        Send(pair.Item1, "error");
+                        Console.WriteLine("Послал ошибку.");
+                        pair.Item1.Close();
+                    }
+                    else
+                    {
+                        pair.Item1.Close();
+                        pair.Item2.Close();
+                    }
+                    break;
+                }
+            }
+        }
+
+        static List<Tuple<TcpClient, TcpClient>> clients = new List<Tuple<TcpClient, TcpClient>>();
         static void Main(string[] args)
         {
-            Queue<TcpClient> queue = new Queue<TcpClient>();
+            List<TcpClient> list = new List<TcpClient>();
             TcpListener server = new TcpListener(IPAddress.Any, 44444);
             server.Start();
             TcpClient connection;
             while (true)
             {
                 connection = server.AcceptTcpClient();
-                queue.Enqueue(connection);
-                if (queue.Count>1)
+                list.Add(connection);
+                int i = 0;
+                while (i < list.Count)
                 {
-                    new Thread(new ParameterizedThreadStart(Game)).Start(new Tuple<TcpClient, TcpClient>(queue.Dequeue(), queue.Dequeue()));
+                    try
+                    {
+                        list[i].GetStream().Write(new byte[1], 0, 0);
+                        i++;
+                    }
+                    catch
+                    {
+
+                        list.RemoveAt(i);
+                    }
+                }
+                if (list.Count > 1)
+                {
+                    TcpClient first = list[0];
+                    TcpClient second = list[1];
+                    list.RemoveRange(0, 2);
+                    Tuple<TcpClient, TcpClient> pair = new Tuple<TcpClient, TcpClient>(first, second);
+                    clients.Add(pair);
+                    new Thread(new ParameterizedThreadStart(Game)).Start(pair);
                 }
             }
         }
@@ -66,12 +144,16 @@ namespace ProjectA_Server
             player1.Client = (o as Tuple<TcpClient, TcpClient>).Item1;
             Player player2 = new Player();
             player2.Client = (o as Tuple<TcpClient, TcpClient>).Item2;
-            player1.Hand = "1:2:2:2:5";
-            player2.Hand = "2:2:2:2";
+            player1.Hand = Receive(player1.Client);
+            Console.WriteLine("Получил первую руку");
+            player2.Hand = Receive(player2.Client);
+            Console.WriteLine("Получил вторую руку");
             Player activePlayer = player1;
             Player passivePlayer = player2;
             Send(activePlayer.Client, activePlayer.Hand);
+            Console.WriteLine("Послал первую руку");
             Send(passivePlayer.Client, passivePlayer.Hand);
+            Console.WriteLine("Послал вторую руку");
             while ((activePlayer.Rounds != 2) && (passivePlayer.Rounds != 2))
             {
                 while (!eog)
@@ -220,8 +302,7 @@ namespace ProjectA_Server
                     Send(activePlayer.Client, "defeat");
                 }
             }
-            player1.Client.Close();
-            player2.Client.Close();
+            RemoveClients(player1.Client, false);
         }
     }
 }

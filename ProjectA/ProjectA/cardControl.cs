@@ -11,8 +11,9 @@ using System.IO;
 
 namespace CardControl
 {
-    public partial class Card: UserControl
+    public partial class Card : UserControl
     {
+        public static List<int> Collection = new List<int> { 1, 2, 3, 4, 5};
         public Card()
         {
             InitializeComponent();
@@ -22,7 +23,7 @@ namespace CardControl
         {
             InitializeComponent();
             InHand = inHand;
-            Id = id;
+            ID = id;
             switch (id)
             {
                 case 1:
@@ -167,7 +168,7 @@ namespace CardControl
             }
         }
 
-        public int Id
+        public int ID
         {
             get
             {
@@ -200,7 +201,7 @@ namespace CardControl
 
         protected virtual void OnSelectionChangedEvent(EventArgs e)
         {
-            SelectionChangedEvent(this, e);
+            SelectionChangedEvent?.Invoke(this, e);
         }
         private void Card_Click(object sender, EventArgs e)
         {

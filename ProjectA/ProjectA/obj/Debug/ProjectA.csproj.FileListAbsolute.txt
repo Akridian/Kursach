@@ -8,3 +8,6 @@ D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.pdb
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.csprojResolveAssemblyReference.cache
 D:\Kursach\ProjectA\ProjectA\obj\Debug\CardControl.Card.resources
 D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.GameForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.StartForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.DraftForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Debug\ProjectA.WaitForm.resources

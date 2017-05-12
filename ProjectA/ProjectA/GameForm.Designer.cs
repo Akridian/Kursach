@@ -148,7 +148,7 @@
             this.yourRound.TabStop = false;
             this.yourRound.Visible = false;
             // 
-            // Form1
+            // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -167,13 +167,12 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1024, 1030);
-            this.Name = "Form1";
+            this.Name = "GameForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.Load += new System.EventHandler(this.GameForm_Load);
+            this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.enemyRound)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yourRound)).EndInit();
             this.ResumeLayout(false);

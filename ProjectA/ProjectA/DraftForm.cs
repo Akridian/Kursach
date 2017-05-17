@@ -27,10 +27,92 @@ namespace ProjectA
             List<int> result = new List<int>();
             while (result.Count < 3)
             {
-                int i = new Random().Next(0, Card.Collection.Count);
-                if (!result.Contains(Card.Collection[i]))
+                if (Deck.Count < 5)
                 {
-                    result.Add(Card.Collection[i]);
+                    int cardCount = Card.Common.Count + Card.Rare.Count + Card.Epic.Count + Card.Legendary.Count;
+                    double r = new Random().NextDouble();
+                    if (r < 0.5)
+                    {
+                        int i = new Random().Next(0, Card.Common.Count);
+                        if (!result.Contains(Card.Common[i]))
+                        {
+                            result.Add(Card.Common[i]);
+                        }
+                    }
+                    else if (r < 0.8)
+                    {
+                        int i = new Random().Next(0, Card.Rare.Count);
+                        if (!result.Contains(Card.Rare[i]))
+                        {
+                            result.Add(Card.Rare[i]);
+                        }
+                    }
+                    else if (r < 0.95)
+                    {
+                        int i = new Random().Next(0, Card.Epic.Count);
+                        if (!result.Contains(Card.Epic[i]))
+                        {
+                            result.Add(Card.Epic[i]);
+                        }
+                    }
+                    else
+                    {
+                        int i = new Random().Next(0, Card.Legendary.Count);
+                        if (!result.Contains(Card.Legendary[i]))
+                        {
+                            result.Add(Card.Legendary[i]);
+                        }
+                    }
+                }
+                else if (Deck.Count < 8)
+                {
+                    int cardCount = Card.Rare.Count + Card.Epic.Count + Card.Legendary.Count;
+                    double r = new Random().NextDouble();
+                    if (r < 0.6)
+                    {
+                        int i = new Random().Next(0, Card.Rare.Count);
+                        if (!result.Contains(Card.Rare[i]))
+                        {
+                            result.Add(Card.Rare[i]);
+                        }
+                    }
+                    else if (r < 0.9)
+                    {
+                        int i = new Random().Next(0, Card.Epic.Count);
+                        if (!result.Contains(Card.Epic[i]))
+                        {
+                            result.Add(Card.Epic[i]);
+                        }
+                    }
+                    else
+                    {
+                        int i = new Random().Next(0, Card.Legendary.Count);
+                        if (!result.Contains(Card.Legendary[i]))
+                        {
+                            result.Add(Card.Legendary[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    int cardCount = Card.Epic.Count + Card.Legendary.Count;
+                    double r = new Random().NextDouble();
+                    if (r < 0.75)
+                    {
+                        int i = new Random().Next(0, Card.Epic.Count);
+                        if (!result.Contains(Card.Epic[i]))
+                        {
+                            result.Add(Card.Epic[i]);
+                        }
+                    }
+                    else
+                    {
+                        int i = new Random().Next(0, Card.Legendary.Count);
+                        if (!result.Contains(Card.Legendary[i]))
+                        {
+                            result.Add(Card.Legendary[i]);
+                        }
+                    }
                 }
             }
             return result;
@@ -96,7 +178,7 @@ namespace ProjectA
             else
             {
                 Deck.Add(selectedCard.ID);
-                if (Deck.Count == 3)
+                if (Deck.Count == 8)
                 {
                     TcpClient server = new TcpClient();
                     try

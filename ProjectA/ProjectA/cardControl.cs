@@ -13,7 +13,10 @@ namespace CardControl
 {
     public partial class Card : UserControl
     {
-        public static List<int> Collection = new List<int> { 1, 2, 3, 4, 5};
+        public static List<int> Common = new List<int> { 2 };
+        public static List<int> Rare = new List<int> { 3, 4 };
+        public static List<int> Epic = new List<int> { 5 };
+        public static List<int> Legendary = new List<int> { 1, 6 };
         public Card()
         {
             InitializeComponent();
@@ -27,7 +30,7 @@ namespace CardControl
             switch (id)
             {
                 case 1:
-                    Power = 999;
+                    Power = 15;
                     Name = "Dr.Balance";
                     Text = "It's okay";
                     Type = AttackType.Range;
@@ -45,18 +48,26 @@ namespace CardControl
                     Text = "Где лицо???";
                     break;
                 case 4:
-                    Power = 3;
+                    Power = 5;
                     Type = AttackType.Melee_spy;
                     Name = "Штирлиц";
-                    Text = "Передаю разведдвнные";
+                    Text = "Передаю разведданные";
                     break;
                 case 5:
-                    Power = 1;
+                    Power = 3;
                     Type = AttackType.Range_spy;
                     Name = "Домохозяйка";
                     Text = "Дорогой, я тебе постелила";
                     break;
+                case 6:
+                    Power = 1;
+                    Type = AttackType.Melee_spy;
+                    Name = "Бомж";
+                    Text = "Я хипстер!";
+                    break;
+
             }
+
             byte[] imageBytes = null;
             if (Type == AttackType.Melee)
             {
@@ -78,6 +89,23 @@ namespace CardControl
             ms.Write(imageBytes, 0, imageBytes.Length);
             Image image = Image.FromStream(ms, true);
             picture.Image = image;
+
+            if (Rare.Contains(id))
+            {
+                Rarity = RarityType.Rare;
+            }
+            else if (Epic.Contains(id))
+            {
+                Rarity = RarityType.Epic;
+            }
+            else if (Legendary.Contains(id))
+            {
+                Rarity = RarityType.Legendary;
+            }
+            else
+            {
+                Rarity = RarityType.Common;
+            }
         }
 
         private int id = 0;
@@ -181,6 +209,35 @@ namespace CardControl
             }
         }
 
+        public RarityType Rarity
+        {
+            get
+            {
+                return rarity;
+            }
+
+            set
+            {
+                if (value == RarityType.Common)
+                {
+                    power.BackColor = Color.AliceBlue;
+                }
+                else if (value == RarityType.Rare)
+                {
+                    power.BackColor = Color.DeepSkyBlue;
+                }
+                else if (value == RarityType.Epic)
+                {
+                    power.BackColor = Color.DarkOrchid;
+                }
+                else if (value == RarityType.Legendary)
+                {
+                    power.BackColor = Color.DarkOrange;
+                }
+                rarity = value;
+            }
+        }
+
         public enum AttackType
         {
             Null,
@@ -190,7 +247,18 @@ namespace CardControl
             Range_spy
         }
 
+        public enum RarityType
+        {
+            Common,
+            Rare,
+            Epic,
+            Legendary
+        }
+        
         private AttackType type = AttackType.Null;
+
+        private RarityType rarity = RarityType.Common;
+
         private bool selected = false;
 
         private bool inHand = false;

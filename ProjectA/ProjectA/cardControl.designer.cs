@@ -75,7 +75,7 @@
             // 
             // power
             // 
-            this.power.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.power.BackColor = System.Drawing.Color.AliceBlue;
             this.power.Location = new System.Drawing.Point(0, 0);
             this.power.Margin = new System.Windows.Forms.Padding(0);
             this.power.Name = "power";

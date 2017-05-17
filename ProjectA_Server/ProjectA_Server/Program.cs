@@ -6,6 +6,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog;
+using NLog.Targets;
+using NLog.Config;
 
 namespace ProjectA_Server
 {
@@ -33,7 +36,8 @@ namespace ProjectA_Server
             }
             catch
             {
-                Console.WriteLine("Не удалось передать данные клиенту. Завершаю игру.");
+                Logger logger = LogManager.GetLogger("Logger" + Thread.CurrentThread.Name);
+                logger.Info("Не удалось передать данные клиенту. Завершаю игру.");
                 RemoveClients(receiver, true);
                 Thread.CurrentThread.Abort();
             }
@@ -52,7 +56,8 @@ namespace ProjectA_Server
             }
             catch
             {
-                Console.WriteLine("Не удалось получить данные. Завершаю игру.");
+                Logger logger = LogManager.GetLogger("Logger" + Thread.CurrentThread.Name);
+                logger.Info("Не удалось получить данные. Завершаю игру.");
                 RemoveClients(sender, true);
                 Thread.CurrentThread.Abort();
             }
@@ -61,7 +66,7 @@ namespace ProjectA_Server
             return msg;
         }
 
-        static void RemoveClients (TcpClient client, bool withError)
+        static void RemoveClients(TcpClient client, bool withError)
         {
             foreach (Tuple<TcpClient, TcpClient> pair in clients)
             {
@@ -71,7 +76,8 @@ namespace ProjectA_Server
                     if (withError)
                     {
                         Send(pair.Item2, "error");
-                        Console.WriteLine("Послал ошибку.");
+                        Logger logger = LogManager.GetLogger("Logger" + Thread.CurrentThread.Name);
+                        logger.Info("Послал ошибку.");
                         pair.Item2.Close();
                     }
                     else
@@ -87,7 +93,8 @@ namespace ProjectA_Server
                     if (withError)
                     {
                         Send(pair.Item1, "error");
-                        Console.WriteLine("Послал ошибку.");
+                        Logger logger = LogManager.GetLogger("Logger" + Thread.CurrentThread.Name);
+                        logger.Info("Послал ошибку.");
                         pair.Item1.Close();
                     }
                     else
@@ -101,6 +108,9 @@ namespace ProjectA_Server
         }
 
         static List<Tuple<TcpClient, TcpClient>> clients = new List<Tuple<TcpClient, TcpClient>>();
+
+        static int gameCount = 0;
+
         static void Main(string[] args)
         {
             List<TcpClient> list = new List<TcpClient>();
@@ -132,47 +142,62 @@ namespace ProjectA_Server
                     list.RemoveRange(0, 2);
                     Tuple<TcpClient, TcpClient> pair = new Tuple<TcpClient, TcpClient>(first, second);
                     clients.Add(pair);
-                    new Thread(new ParameterizedThreadStart(Game)).Start(pair);
+                    gameCount++;
+                    Tuple<TcpClient, TcpClient, int> parameters = new Tuple<TcpClient, TcpClient, int>(first, second, gameCount);
+                    new Thread(new ParameterizedThreadStart(Game)).Start(parameters);
                 }
             }
         }
 
         static void Game(object o)
         {
+            int game = (o as Tuple<TcpClient, TcpClient, int>).Item3;
+            LoggingConfiguration config = new LoggingConfiguration();
+            FileTarget fileTarget = new FileTarget();
+            fileTarget.FileName = "log_" + DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss") + "_game_" + game + ".txt";
+            fileTarget.Layout = "${message}";
+            fileTarget.DeleteOldFileOnStartup = true;
+            LoggingRule rule = new LoggingRule("*", LogLevel.Info, fileTarget);
+            config.LoggingRules.Add(rule);
+            LogManager.Configuration = config;
+            Logger logger = LogManager.GetLogger("Logger" + game);
+            Thread.CurrentThread.Name = game.ToString();
+
             bool eog = false;
             Player player1 = new Player();
-            player1.Client = (o as Tuple<TcpClient, TcpClient>).Item1;
+            player1.Client = (o as Tuple<TcpClient, TcpClient, int>).Item1;
             Player player2 = new Player();
-            player2.Client = (o as Tuple<TcpClient, TcpClient>).Item2;
+            player2.Client = (o as Tuple<TcpClient, TcpClient, int>).Item2;
             player1.Hand = Receive(player1.Client);
-            Console.WriteLine("Получил первую руку");
+            logger.Info("Получил первую руку (" + player1.Hand + ")");
             player2.Hand = Receive(player2.Client);
-            Console.WriteLine("Получил вторую руку");
+            logger.Info("Получил вторую руку (" + player2.Hand + ")");
             Player activePlayer = player1;
             Player passivePlayer = player2;
             Send(activePlayer.Client, activePlayer.Hand);
-            Console.WriteLine("Послал первую руку");
+            logger.Info("Послал первую руку (" + activePlayer.Hand + ")");
             Send(passivePlayer.Client, passivePlayer.Hand);
-            Console.WriteLine("Послал вторую руку");
+            logger.Info("Послал вторую руку (" + passivePlayer.Hand + ")");
             while ((activePlayer.Rounds != 2) && (passivePlayer.Rounds != 2))
             {
                 while (!eog)
                 {
                     Send(activePlayer.Client, "game");
-                    Console.WriteLine("Посылаю игру");
+                    logger.Info("Посылаю игру");
                     Send(activePlayer.Client, passivePlayer.Range);
-                    Console.WriteLine("Послал вражей реньжей");
+                    logger.Info("Послал вражей реньжей (" + passivePlayer.Range + ")");
                     Send(activePlayer.Client, passivePlayer.Melee);
-                    Console.WriteLine("Послал вражей мили");
+                    logger.Info("Послал вражей мили (" + passivePlayer.Melee + ")");
                     Send(activePlayer.Client, activePlayer.Melee);
-                    Console.WriteLine("Послал твоих мили");
+                    logger.Info("Послал твоих мили (" + activePlayer.Melee + ")");
                     Send(activePlayer.Client, activePlayer.Range);
-                    Console.WriteLine("Послал твоих реньжей");
+                    logger.Info("Послал твоих реньжей (" + activePlayer.Range + ")");
                     Send(activePlayer.Client, activePlayer.Hand);
-                    Console.WriteLine("Послал руку");
+                    logger.Info("Послал руку (" + activePlayer.Hand + ")");
                     string msg = Receive(activePlayer.Client);
                     if (msg == "spy")
                     {
+                        logger.Info("Получил запрос на карту со шпиона");
                         string card = "";
                         if (passivePlayer.Hand.Length != 0)
                         {
@@ -180,30 +205,33 @@ namespace ProjectA_Server
                             card = cards[new Random().Next(0, cards.Length)];
                         }
                         Send(activePlayer.Client, "spy");
-                        Console.WriteLine("Послал карту с шпиона");
                         Send(activePlayer.Client, card);
+                        logger.Info("Послал карту с шпиона (" + card + ")");
                         msg = Receive(activePlayer.Client);
                     }
                     if (msg == "game")
                     {
+                        logger.Info("Получаю игру от активного");
                         passivePlayer.Range = Receive(activePlayer.Client);
-                        Console.WriteLine("Получил вражей реньжей\n" + passivePlayer.Range);
+                        logger.Info("Получил вражей реньжей (" + passivePlayer.Range + ")");
                         passivePlayer.Melee = Receive(activePlayer.Client);
-                        Console.WriteLine("Получил вражей мили\n" + passivePlayer.Melee);
+                        logger.Info("Получил вражей мили (" + passivePlayer.Melee + ")");
                         activePlayer.Melee = Receive(activePlayer.Client);
-                        Console.WriteLine("Получил твоих мили\n" + activePlayer.Melee);
+                        logger.Info("Получил твоих мили (" + activePlayer.Melee + ")");
                         activePlayer.Range = Receive(activePlayer.Client);
-                        Console.WriteLine("Получил твоих реньжей\n" + activePlayer.Range);
+                        logger.Info("Получил твоих реньжей (" + activePlayer.Range + ")");
                         activePlayer.Hand = Receive(activePlayer.Client);
-                        Console.WriteLine("Получил руку\n" + activePlayer.Hand);
+                        logger.Info("Получил руку (" + activePlayer.Hand + ")");
                         if (activePlayer.Hand == "")
                         {
                             activePlayer.Pass = true;
+                            logger.Info("У игрока кончились карты - пас");
                         }
                     }
                     else if (msg == "pass")
                     {
                         activePlayer.Pass = true;
+                        logger.Info("Игрок спасовал");
                     }
                     if (!passivePlayer.Pass)
                     {
@@ -217,53 +245,60 @@ namespace ProjectA_Server
                             activePlayer = player1;
                             passivePlayer = player2;
                         }
+                        logger.Info("Смена активного игрока.");
                     }
                     if (activePlayer.Pass && passivePlayer.Pass)
                     {
                         eog = true;
+                        logger.Info("Конец раунда");
                     }
                 }
                 Send(passivePlayer.Client, "game");
-                Console.WriteLine("Посылаю игру");
+                logger.Info("Посылаю игру пассивному игроку");
                 Send(passivePlayer.Client, activePlayer.Range);
-                Console.WriteLine("Послал вражей реньжей");
+                logger.Info("Послал вражей реньжей (" + activePlayer.Range + ")");
                 Send(passivePlayer.Client, activePlayer.Melee);
-                Console.WriteLine("Послал вражей мили");
+                logger.Info("Послал вражей мили (" + activePlayer.Melee + ")");
                 Send(passivePlayer.Client, passivePlayer.Melee);
-                Console.WriteLine("Послал твоих мили");
+                logger.Info("Послал твоих мили (" + passivePlayer.Melee + ")");
                 Send(passivePlayer.Client, passivePlayer.Range);
-                Console.WriteLine("Послал твоих реньжей");
+                logger.Info("Послал твоих реньжей (" + passivePlayer.Range + ")");
                 Send(passivePlayer.Client, passivePlayer.Hand);
-                Console.WriteLine("Послал руку");
+                logger.Info("Послал руку (" + passivePlayer.Hand + ")");
 
                 Send(activePlayer.Client, "score");
-                Console.WriteLine("Запросил счет 1");
+                logger.Info("Запросил счет активного");
                 activePlayer.Score = Receive(activePlayer.Client);
-                Console.WriteLine("Получил счет 1\n" + activePlayer.Score);
+                logger.Info("Получил счет активного (" + activePlayer.Score + ")");
                 Send(passivePlayer.Client, "score");
-                Console.WriteLine("Запросил счет 2");
+                logger.Info("Запросил счет пассивного");
                 passivePlayer.Score = Receive(passivePlayer.Client);
-                Console.WriteLine("Получил счет 2\n" + passivePlayer.Score);
+                logger.Info("Получил счет пассивного (" + passivePlayer.Score + ")");
                 if (activePlayer.Score == passivePlayer.Score)
                 {
                     Send(activePlayer.Client, "round_draw");
                     activePlayer.Rounds++;
                     Send(passivePlayer.Client, "round_draw");
                     passivePlayer.Rounds++;
+                    logger.Info("Послал ничью в раунде обоим");
                 }
                 else
                 {
                     if (int.Parse(activePlayer.Score) > int.Parse(passivePlayer.Score))
                     {
                         Send(activePlayer.Client, "round_victory");
+                        logger.Info("Послал победу в раунде активному");
                         activePlayer.Rounds++;
                         Send(passivePlayer.Client, "round_defeat");
+                        logger.Info("Послал поражение в раунде пассивному");
                     }
                     else
                     {
                         Send(passivePlayer.Client, "round_victory");
+                        logger.Info("Послал победу в раунде пассивному");
                         passivePlayer.Rounds++;
                         Send(activePlayer.Client, "round_defeat");
+                        logger.Info("Послал поражение в раунде активному");
                     }
                 }
                 activePlayer.Melee = "";
@@ -273,6 +308,7 @@ namespace ProjectA_Server
                 activePlayer.Pass = false;
                 passivePlayer.Pass = false;
                 eog = false;
+                logger.Info("Сбросил борду");
                 if (activePlayer == player1)
                 {
                     activePlayer = player2;
@@ -283,23 +319,30 @@ namespace ProjectA_Server
                     activePlayer = player1;
                     passivePlayer = player2;
                 }
+                logger.Info("Сменил активного игрока");
             }
+            logger.Info("Конец игры");
             if (activePlayer.Rounds == passivePlayer.Rounds)
             {
                 Send(activePlayer.Client, "draw");
                 Send(passivePlayer.Client, "draw");
+                logger.Info("Послал ничью обоим");
             }
             else
             {
                 if (activePlayer.Rounds == 2)
                 {
                     Send(activePlayer.Client, "victory");
+                    logger.Info("Послал победу активному");
                     Send(passivePlayer.Client, "defeat");
+                    logger.Info("Послал поражение пассивному");
                 }
                 else
                 {
                     Send(passivePlayer.Client, "victory");
+                    logger.Info("Послал победу пассивному");
                     Send(activePlayer.Client, "defeat");
+                    logger.Info("Послал поражение активному");
                 }
             }
             RemoveClients(player1.Client, false);

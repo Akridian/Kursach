@@ -158,6 +158,10 @@ namespace ProjectA
                 }
                 else if (msg == "score")
                 {
+                    Invoke(new Action(() =>
+                    {
+                        playCard.Enabled = false;
+                    }));
                     Send(server, yourScore.Text);
                 }
                 else if (msg == "round_victory")
@@ -166,6 +170,7 @@ namespace ProjectA
                     {
                         yourRound.Visible = true;
                         MessageBox.Show("Round Victory");
+                        playCard.Enabled = false;
                     }));
                     ClearBoard();
                 }
@@ -176,6 +181,7 @@ namespace ProjectA
                         yourRound.Visible = true;
                         enemyRound.Visible = true;
                         MessageBox.Show("Round Draw");
+                        playCard.Enabled = false;
                     }));
                     ClearBoard();
                 }
@@ -185,6 +191,7 @@ namespace ProjectA
                     {
                         enemyRound.Visible = true;
                         MessageBox.Show("Round Defeat");
+                        playCard.Enabled = false;
                     }));
                     ClearBoard();
                 }
@@ -193,6 +200,7 @@ namespace ProjectA
                     Invoke(new Action(() =>
                     {
                         MessageBox.Show("VICTORY");
+                        playCard.Enabled = false;
                     }));
                     eog = true;
                 }
@@ -201,6 +209,7 @@ namespace ProjectA
                     Invoke(new Action(() =>
                     {
                         MessageBox.Show("DRAW");
+                        playCard.Enabled = false;
                     }));
                     eog = true;
                 }
@@ -209,6 +218,7 @@ namespace ProjectA
                     Invoke(new Action(() =>
                     {
                         MessageBox.Show("DEFEAT");
+                        playCard.Enabled = false;
                     }));
                     eog = true;
                 }
@@ -217,6 +227,7 @@ namespace ProjectA
                     Invoke(new Action(() =>
                     {
                         MessageBox.Show("Ваш противник вышел.");
+                        playCard.Enabled = false;
                     }));
                     Environment.Exit(0);
                 }

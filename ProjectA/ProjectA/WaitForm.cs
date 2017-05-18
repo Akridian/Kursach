@@ -20,10 +20,14 @@ namespace ProjectA
         private void WaitForm_Load(object sender, EventArgs e)
         {
             progressBar.Step = 1;
-            /*while (true)
+        }
+
+        private void WaitForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
             {
-                progressBar.PerformStep();
-            }*/
+                Environment.Exit(0);
+            }
         }
     }
 }

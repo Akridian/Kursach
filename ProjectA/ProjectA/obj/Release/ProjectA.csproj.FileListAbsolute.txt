@@ -1,0 +1,13 @@
+D:\Kursach\ProjectA\ProjectA\bin\Release\ProjectA.exe.config
+D:\Kursach\ProjectA\ProjectA\bin\Release\ProjectA.exe
+D:\Kursach\ProjectA\ProjectA\bin\Release\ProjectA.pdb
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.csprojResolveAssemblyReference.cache
+D:\Kursach\ProjectA\ProjectA\obj\Release\CardControl.Card.resources
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.DraftForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.GameForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.Properties.Resources.resources
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.StartForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.WaitForm.resources
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.csproj.GenerateResource.Cache
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.exe
+D:\Kursach\ProjectA\ProjectA\obj\Release\ProjectA.pdb

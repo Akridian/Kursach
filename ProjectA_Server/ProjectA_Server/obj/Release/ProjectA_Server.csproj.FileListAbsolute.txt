@@ -1,0 +1,8 @@
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Release\ProjectA_Server.exe.config
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Release\ProjectA_Server.exe
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Release\ProjectA_Server.pdb
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Release\NLog.dll
+D:\Kursach\ProjectA_Server\ProjectA_Server\bin\Release\NLog.xml
+D:\Kursach\ProjectA_Server\ProjectA_Server\obj\Release\ProjectA_Server.csprojResolveAssemblyReference.cache
+D:\Kursach\ProjectA_Server\ProjectA_Server\obj\Release\ProjectA_Server.exe
+D:\Kursach\ProjectA_Server\ProjectA_Server\obj\Release\ProjectA_Server.pdb

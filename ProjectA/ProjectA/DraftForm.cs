@@ -27,7 +27,7 @@ namespace ProjectA
             List<int> result = new List<int>();
             while (result.Count < 3)
             {
-                if (Deck.Count < 5)
+                if (Deck.Count < 4)
                 {
                     int cardCount = Card.Common.Count + Card.Rare.Count + Card.Epic.Count + Card.Legendary.Count;
                     double r = new Random().NextDouble();
@@ -64,7 +64,7 @@ namespace ProjectA
                         }
                     }
                 }
-                else if (Deck.Count < 8)
+                else if (Deck.Count < 7)
                 {
                     int cardCount = Card.Rare.Count + Card.Epic.Count + Card.Legendary.Count;
                     double r = new Random().NextDouble();
@@ -193,7 +193,7 @@ namespace ProjectA
                     string msg = "";
                     foreach (int card in Deck)
                     {
-                        msg += card + ":";
+                        msg += card + "," + new Card(card, false).Power + ":";
                     }
                     if (msg != "")
                     {

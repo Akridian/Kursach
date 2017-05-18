@@ -1,5 +1,0 @@
-D:\Kursach\CCGlib\CCGlib\bin\Debug\CCGlib.dll
-D:\Kursach\CCGlib\CCGlib\bin\Debug\CCGlib.pdb
-D:\Kursach\CCGlib\CCGlib\obj\Debug\CCGlib.csprojResolveAssemblyReference.cache
-D:\Kursach\CCGlib\CCGlib\obj\Debug\CCGlib.dll
-D:\Kursach\CCGlib\CCGlib\obj\Debug\CCGlib.pdb

@@ -73,9 +73,12 @@ namespace ProjectA
         private void GameForm_Load(object sender, EventArgs e)
         {
             string[] s = handString.Split(':');
-            foreach (string id in s)
+            foreach (string c in s)
             {
-                hand.Controls.Add(new Card(int.Parse(id), true));
+                string[] card = c.Split(',');
+                Card nc = new Card(int.Parse(card[0]), true);
+                nc.Power = int.Parse(card[1]);
+                hand.Controls.Add(nc);
             }
             foreach (Card c in hand.Controls)
             {
@@ -94,9 +97,12 @@ namespace ProjectA
                 {
                     line.Controls.Clear();
                     string[] s = msg.Split(':');
-                    foreach (string id in s)
+                    foreach (string c in s)
                     {
-                        line.Controls.Add(new Card(int.Parse(id), inhand));
+                        string[] card = c.Split(',');
+                        Card nc = new Card(int.Parse(card[0]), inhand);
+                        nc.Power = int.Parse(card[1]);
+                        line.Controls.Add(nc);
                     }
                 }));
             }
@@ -152,7 +158,10 @@ namespace ProjectA
                     msg = Receive(server);
                     Invoke(new Action(() =>
                     {
-                        hand.Controls.Add(new Card(Convert.ToInt32(msg), true));
+                        string[] card = msg.Split(',');
+                        Card nc = new Card(int.Parse(card[0]), true);
+                        nc.Power = int.Parse(card[1]);
+                        hand.Controls.Add(nc);
                     }));
                     new Thread(new ThreadStart(SendLines)).Start();
                 }
@@ -301,6 +310,47 @@ namespace ProjectA
                         Send(server, "spy");
                         spy = true;
                     }
+                    else if (c.Type == Card.AttackType.Melee_weather)
+                    {
+                        foreach (Card ac in yourMelee.Controls)
+                        {
+                            ac.Power = c.Power;
+                        }
+                        foreach (Card ac in enemyMelee.Controls)
+                        {
+                            ac.Power = c.Power;
+                        }
+                    }
+                    else if (c.Type == Card.AttackType.Range_weather)
+                    {
+                        foreach (Card ac in yourRange.Controls)
+                        {
+                            ac.Power = c.Power;
+                        }
+                        foreach (Card ac in enemyRange.Controls)
+                        {
+                            ac.Power = c.Power;
+                        }
+                    }
+                    else if (c.Type == Card.AttackType.Clear_weather)
+                    {
+                        foreach (Card ac in yourMelee.Controls)
+                        {
+                            ac.Power = ac.DefaultPower;
+                        }
+                        foreach (Card ac in enemyMelee.Controls)
+                        {
+                            ac.Power = ac.DefaultPower;
+                        }
+                        foreach (Card ac in yourRange.Controls)
+                        {
+                            ac.Power = ac.DefaultPower;
+                        }
+                        foreach (Card ac in enemyRange.Controls)
+                        {
+                            ac.Power = ac.DefaultPower;
+                        }
+                    }
                     c.InHand = false;
                     pass = false;
                     break;
@@ -322,12 +372,12 @@ namespace ProjectA
 
         public void SendLines()
         {
-                Send(server, "game");
-                SendLine(enemyRange.Controls);
-                SendLine(enemyMelee.Controls);
-                SendLine(yourMelee.Controls);
-                SendLine(yourRange.Controls);
-                SendLine(hand.Controls);
+            Send(server, "game");
+            SendLine(enemyRange.Controls);
+            SendLine(enemyMelee.Controls);
+            SendLine(yourMelee.Controls);
+            SendLine(yourRange.Controls);
+            SendLine(hand.Controls);
         }
         public void SendLine(Control.ControlCollection controls)
         {
@@ -335,7 +385,7 @@ namespace ProjectA
             foreach (Control c in controls)
             {
                 Card card = c as Card;
-                msg += card.ID + ":";
+                msg += card.ID + "," + card.Power + ":";
             }
             if (msg != "")
             {
@@ -350,7 +400,7 @@ namespace ProjectA
             {
                 foreach (Card hc in hand.Controls)
                 {
-                    if (hc.Selected&&(hc!=c))
+                    if (hc.Selected && (hc != c))
                     {
                         hc.Selected = false;
                     }
@@ -365,7 +415,7 @@ namespace ProjectA
             yourRange.Width = Width - yourRange.Location.X * 2;
             yourMelee.Width = Width - yourMelee.Location.X * 2;
             hand.Width = Width - hand.Location.X * 2;
-            playCard.Location = new Point(Width / 2 - playCard.Width / 2, yourRange.Location.Y + yourRange.Height + (hand.Location.Y - (yourRange.Location.Y + yourRange.Height)) / 2-  playCard.Height/2);
+            playCard.Location = new Point(Width / 2 - playCard.Width / 2, yourRange.Location.Y + yourRange.Height + (hand.Location.Y - (yourRange.Location.Y + yourRange.Height)) / 2 - playCard.Height / 2);
         }
 
         private void GameForm_KeyDown(object sender, KeyEventArgs e)

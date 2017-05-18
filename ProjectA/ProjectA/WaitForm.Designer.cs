@@ -58,12 +58,14 @@
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WaitForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.WaitForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WaitForm_KeyDown);
             this.ResumeLayout(false);
 
         }

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CardControl;
 using System.Net.Sockets;
@@ -55,7 +50,7 @@ namespace ProjectA
         }
 
         TcpClient server;
-        string handString;
+        string handString = "";
         public GameForm(TcpClient srv, string h)
         {
             server = srv;
@@ -72,17 +67,20 @@ namespace ProjectA
 
         private void GameForm_Load(object sender, EventArgs e)
         {
-            string[] s = handString.Split(':');
-            foreach (string c in s)
+            if (handString != "")
             {
-                string[] card = c.Split(',');
-                Card nc = new Card(int.Parse(card[0]), true);
-                nc.Power = int.Parse(card[1]);
-                hand.Controls.Add(nc);
-            }
-            foreach (Card c in hand.Controls)
-            {
-                c.SelectionChangedEvent += Card_SelectionChanged;
+                string[] s = handString.Split(':');
+                foreach (string c in s)
+                {
+                    string[] card = c.Split(',');
+                    Card nc = new Card(int.Parse(card[0]), true);
+                    nc.Power = int.Parse(card[1]);
+                    hand.Controls.Add(nc);
+                }
+                foreach (Card c in hand.Controls)
+                {
+                    c.SelectionChangedEvent += Card_SelectionChanged;
+                }
             }
             Redraw();
             Visible = true;
@@ -158,10 +156,13 @@ namespace ProjectA
                     msg = Receive(server);
                     Invoke(new Action(() =>
                     {
-                        string[] card = msg.Split(',');
-                        Card nc = new Card(int.Parse(card[0]), true);
-                        nc.Power = int.Parse(card[1]);
-                        hand.Controls.Add(nc);
+                        if (msg != "")
+                        {
+                            string[] card = msg.Split(',');
+                            Card nc = new Card(int.Parse(card[0]), true);
+                            nc.Power = int.Parse(card[1]);
+                            hand.Controls.Add(nc);
+                        }
                     }));
                     new Thread(new ThreadStart(SendLines)).Start();
                 }
